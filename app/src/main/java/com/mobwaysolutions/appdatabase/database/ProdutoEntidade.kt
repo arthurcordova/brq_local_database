@@ -12,5 +12,8 @@ data class ProdutoEntidade(
     var id: Int = 0,
 
     @ColumnInfo(name = "produto_nome")
-    val nome: String
+    val nome: String,
+
+    @ColumnInfo(name = "produto_preco")
+    val preco: Double
 )
