@@ -15,5 +15,8 @@ interface ProdutoDAO {
     fun buscar(): List<ProdutoEntidade>
 
     @Query("select * from produto_table where produto_id = :id")
-    fun buscarPorId(id: Int) : ProdutoEntidade
+    fun buscarPorId(id: Int): ProdutoEntidade
+
+    @Query("select * from produto_table where produto_nome like '%' || :text || '%'")
+    fun buscarComFiltroNome(text: String): List<ProdutoEntidade>
 }

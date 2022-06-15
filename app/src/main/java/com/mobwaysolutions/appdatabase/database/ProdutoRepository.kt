@@ -16,4 +16,12 @@ class ProdutoRepository(private val context: Context) {
         return AppDatabase.getInstance(context)?.getProdutoDAO()?.buscarPorId(id)
     }
 
+    fun deletar(produtoEntidade: ProdutoEntidade) {
+        AppDatabase.getInstance(context)?.getProdutoDAO()?.delete(produtoEntidade)
+    }
+
+    fun buscarComFiltro(text: String): List<ProdutoEntidade>? {
+        return AppDatabase.getInstance(context)?.getProdutoDAO()?.buscarComFiltroNome(text)
+    }
+
 }

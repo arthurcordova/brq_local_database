@@ -2,6 +2,7 @@ package com.mobwaysolutions.appdatabase
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
@@ -13,6 +14,7 @@ class EdicaoProdutoActivity : AppCompatActivity() {
     private lateinit var tilProdutoPreco: TextInputLayout
     private lateinit var tvTitulo: TextView
     private lateinit var buttonSave: Button
+    private lateinit var buttonDelete: Button
 
     private val produtoRepository = ProdutoRepository(this)
 
@@ -32,21 +34,29 @@ class EdicaoProdutoActivity : AppCompatActivity() {
         if (isEditMode) {
             tvTitulo.text = "Editar um produto"
             buttonSave.text = "Alterar"
+            buttonDelete.visibility = View.VISIBLE
 
             val produtoSelecionado = produtoRepository.buscarPorId(produtoId!!)
             produtoSelecionado?.let { prod ->
                 tilProdutoNome.editText?.setText(prod.nome)
                 tilProdutoPreco.editText?.setText(prod.preco.toString())
+
+                buttonDelete.setOnClickListener {
+                    produtoRepository.deletar(prod)
+                    finish()
+                }
             }
         }
 
         buttonSave.setOnClickListener { saveToLocalDb() }
+
     }
 
     private fun initComponents() {
         tilProdutoNome = findViewById(R.id.tilProdutoNome)
         tilProdutoPreco = findViewById(R.id.tilProdutoPreco)
         buttonSave = findViewById(R.id.bSave)
+        buttonDelete = findViewById(R.id.bDelete)
         tvTitulo = findViewById(R.id.tvTitulo)
     }
 

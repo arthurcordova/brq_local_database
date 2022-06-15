@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var rvListaProdutos: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
+    private lateinit var buttonPesquisa: Button
+    private lateinit var tilPesquisa: TextInputLayout
     private val produtoRepository = ProdutoRepository(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +27,19 @@ class MainActivity : AppCompatActivity() {
         fabAdd.setOnClickListener {
             Intent(this, EdicaoProdutoActivity::class.java).let {
                 startActivity(it)
+            }
+        }
+
+        buttonPesquisa.setOnClickListener {
+            val textPesquisa = tilPesquisa.editText?.text.toString()
+            if (textPesquisa.isNotEmpty()) {
+                val novaListaFiltrada = produtoRepository.buscarComFiltro(textPesquisa)
+                val adapter = rvListaProdutos.adapter as ProdutoAdapter
+                novaListaFiltrada?.let {
+                    adapter.refresh(it)
+                }
+            } else {
+                buscarTodosOsDadosDoBanco()
             }
         }
     }
@@ -37,6 +52,8 @@ class MainActivity : AppCompatActivity() {
     private fun initComponents() {
         rvListaProdutos = findViewById(R.id.rvListaProdutos)
         fabAdd = findViewById(R.id.fabAdd)
+        tilPesquisa = findViewById(R.id.tilPesquisa)
+        buttonPesquisa = findViewById(R.id.bPesquisa)
     }
 
     private fun buscarTodosOsDadosDoBanco() {
