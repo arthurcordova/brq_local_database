@@ -1,14 +1,11 @@
 package com.mobwaysolutions.appdatabase.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ProdutoDAO {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun inserir(produtoEntidade: ProdutoEntidade)
 
     @Delete
@@ -17,4 +14,6 @@ interface ProdutoDAO {
     @Query("SELECT * FROM produto_table ORDER BY produto_nome")
     fun buscar(): List<ProdutoEntidade>
 
+    @Query("select * from produto_table where produto_id = :id")
+    fun buscarPorId(id: Int) : ProdutoEntidade
 }

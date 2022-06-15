@@ -1,10 +1,12 @@
 package com.mobwaysolutions.appdatabase
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.mobwaysolutions.appdatabase.adapter.ProdutoAdapter
 import com.mobwaysolutions.appdatabase.database.ProdutoEntidade
@@ -12,34 +14,29 @@ import com.mobwaysolutions.appdatabase.database.ProdutoRepository
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var tilProdutoNome: TextInputLayout
-    private lateinit var buttonSave: Button
     private lateinit var rvListaProdutos: RecyclerView
+    private lateinit var fabAdd: FloatingActionButton
     private val produtoRepository = ProdutoRepository(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initComponents()
+        fabAdd.setOnClickListener {
+            Intent(this, EdicaoProdutoActivity::class.java).let {
+                startActivity(it)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
         buscarTodosOsDadosDoBanco()
-        buttonSave.setOnClickListener { saveToLocalDb() }
     }
 
     private fun initComponents() {
-        tilProdutoNome = findViewById(R.id.tilProdutoNome)
-        buttonSave = findViewById(R.id.bSave)
         rvListaProdutos = findViewById(R.id.rvListaProdutos)
-    }
-
-    private fun saveToLocalDb() {
-        val nomeDaTela = tilProdutoNome.editText?.text.toString()
-        if (nomeDaTela.isNotEmpty()) {
-            tilProdutoNome.error = null
-            val produtoEntidade = ProdutoEntidade(nome = nomeDaTela, preco = 19.90)
-            produtoRepository.inserir(produtoEntidade)
-        } else {
-            tilProdutoNome.error = "Nome não pode estar em branco"
-        }
+        fabAdd = findViewById(R.id.fabAdd)
     }
 
     private fun buscarTodosOsDadosDoBanco() {
@@ -48,11 +45,15 @@ class MainActivity : AppCompatActivity() {
         listaDeprodutos?.let {
             startRecyclerView(it)
         }
-
     }
 
     private fun startRecyclerView(listaDeProdutos: List<ProdutoEntidade>) {
-        rvListaProdutos.adapter = ProdutoAdapter(listaDeProdutos)
+        rvListaProdutos.adapter = ProdutoAdapter(listaDeProdutos.toMutableList()) { produto ->
+            Intent(this, EdicaoProdutoActivity::class.java).let {
+                it.putExtra("produto_id", produto.id)
+                startActivity(it)
+            }
+        }
         rvListaProdutos.layoutManager = LinearLayoutManager(this)
     }
 

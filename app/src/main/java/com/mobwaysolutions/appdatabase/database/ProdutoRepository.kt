@@ -12,4 +12,8 @@ class ProdutoRepository(private val context: Context) {
         return AppDatabase.getInstance(context)?.getProdutoDAO()?.buscar()
     }
 
+    fun buscarPorId(id: Int): ProdutoEntidade? {
+        return AppDatabase.getInstance(context)?.getProdutoDAO()?.buscarPorId(id)
+    }
+
 }

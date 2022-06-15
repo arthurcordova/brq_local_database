@@ -9,9 +9,11 @@ import com.mobwaysolutions.appdatabase.database.ProdutoEntidade
 class ProdutoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val tvNomeProduto: TextView = itemView.findViewById(R.id.tvNomeProduto)
+    private val tvPrecoProduto: TextView = itemView.findViewById(R.id.tvPrecoProduto)
 
     fun bind(produto: ProdutoEntidade) {
         tvNomeProduto.text = produto.nome
+        tvPrecoProduto.text = produto.preco.toString()
     }
 
 }
