@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var buttonPesquisa: Button
     private lateinit var tilPesquisa: TextInputLayout
+    private lateinit var ivCompras: ImageView
 
     private val produtoRepository = ProdutoRepository(this)
     private val usuarioRepository = UsuarioRepository(this)
@@ -48,6 +50,12 @@ class MainActivity : AppCompatActivity() {
                 buscarTodosOsDadosDoBanco()
             }
         }
+
+        ivCompras.setOnClickListener {
+            Intent(this, CarrinhoActivity::class.java).let {
+                startActivity(it)
+            }
+        }
     }
 
     override fun onResume() {
@@ -60,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         fabAdd = findViewById(R.id.fabAdd)
         tilPesquisa = findViewById(R.id.tilPesquisa)
         buttonPesquisa = findViewById(R.id.bPesquisa)
+        ivCompras = findViewById(R.id.ivCompras)
     }
 
     private fun buscarTodosOsDadosDoBanco() {
@@ -72,14 +81,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun startRecyclerView(listaDeProdutos: List<ProdutoEntidade>) {
         rvListaProdutos.adapter =
-            ProdutoAdapter(listaDeProdutos.toMutableList(), onClick = { produto ->
-                Intent(this, EdicaoProdutoActivity::class.java).let {
-                    it.putExtra("produto_id", produto.id)
-                    startActivity(it)
-                }
-            }, onClickAddProduct = { produto ->
-                salvarVenda(produto)
-            })
+            ProdutoAdapter(listaDeProdutos.toMutableList(),
+                onClick = { produto ->
+                    Intent(this, EdicaoProdutoActivity::class.java).let {
+                        it.putExtra("produto_id", produto.id)
+                        startActivity(it)
+                    }
+                },
+                onClickAddProduct = { produto ->
+                    salvarVenda(produto)
+                })
         rvListaProdutos.layoutManager = LinearLayoutManager(this)
     }
 
@@ -87,13 +98,13 @@ class MainActivity : AppCompatActivity() {
     fun salvarVenda(produtoEntidade: ProdutoEntidade) {
         val usuario = usuarioRepository.buscar()?.first()
         usuario?.let { user ->
-            val vendasEntidade = VendasEntidade(produto = produtoEntidade,
+            val vendasEntidade = VendasEntidade(
+                produto = produtoEntidade,
                 usuario = user
             )
             vendasRepository.inserir(vendasEntidade)
         }
     }
-
 
 
 }
