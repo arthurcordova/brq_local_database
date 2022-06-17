@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
-import com.mobwaysolutions.appdatabase.database.ProdutoEntidade
-import com.mobwaysolutions.appdatabase.database.ProdutoRepository
+import com.mobwaysolutions.appdatabase.entity.ProdutoEntidade
+import com.mobwaysolutions.appdatabase.repository.ProdutoRepository
 
 class EdicaoProdutoActivity : AppCompatActivity() {
     private lateinit var tilProdutoNome: TextInputLayout

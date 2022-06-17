@@ -4,9 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobwaysolutions.appdatabase.R
-import com.mobwaysolutions.appdatabase.database.ProdutoEntidade
+import com.mobwaysolutions.appdatabase.entity.ProdutoEntidade
 
-class ProdutoAdapter(private val listaDeProdutos: MutableList<ProdutoEntidade>, private val onClick: (ProdutoEntidade) -> Unit) :
+class ProdutoAdapter(
+    private val listaDeProdutos: MutableList<ProdutoEntidade>,
+    private val onClick: (ProdutoEntidade) -> Unit,
+    private val onClickAddProduct: (ProdutoEntidade) -> Unit
+) :
     RecyclerView.Adapter<ProdutoViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProdutoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_produto, parent, false)
@@ -17,6 +21,7 @@ class ProdutoAdapter(private val listaDeProdutos: MutableList<ProdutoEntidade>, 
         val produto = listaDeProdutos[position]
         holder.bind(produto)
         holder.itemView.setOnClickListener { onClick.invoke(produto) }
+        holder.ivAddCart.setOnClickListener { onClickAddProduct.invoke(produto) }
     }
 
     override fun getItemCount(): Int {

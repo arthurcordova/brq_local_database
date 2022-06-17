@@ -1,6 +1,7 @@
-package com.mobwaysolutions.appdatabase.database
+package com.mobwaysolutions.appdatabase.dao
 
 import androidx.room.*
+import com.mobwaysolutions.appdatabase.entity.ProdutoEntidade
 
 @Dao
 interface ProdutoDAO {

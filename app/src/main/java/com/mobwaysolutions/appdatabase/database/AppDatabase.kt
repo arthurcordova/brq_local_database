@@ -4,16 +4,26 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.mobwaysolutions.appdatabase.dao.ProdutoDAO
+import com.mobwaysolutions.appdatabase.dao.UsuarioDAO
+import com.mobwaysolutions.appdatabase.dao.VendasDAO
+import com.mobwaysolutions.appdatabase.entity.ProdutoEntidade
+import com.mobwaysolutions.appdatabase.entity.UsuarioEntidade
+import com.mobwaysolutions.appdatabase.entity.VendasEntidade
 
 @Database(
     version = 1,
     entities = [
-        ProdutoEntidade::class
+        ProdutoEntidade::class,
+        UsuarioEntidade::class,
+        VendasEntidade::class
     ]
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun getProdutoDAO() : ProdutoDAO
+    abstract fun getProdutoDAO(): ProdutoDAO
+    abstract fun getUsuarioDAO(): UsuarioDAO
+    abstract fun getVendasDAO(): VendasDAO
 
     companion object {
 

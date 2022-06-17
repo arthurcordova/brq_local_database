@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.mobwaysolutions.appdatabase.adapter.ProdutoAdapter
-import com.mobwaysolutions.appdatabase.database.ProdutoEntidade
-import com.mobwaysolutions.appdatabase.database.ProdutoRepository
+import com.mobwaysolutions.appdatabase.entity.ProdutoEntidade
+import com.mobwaysolutions.appdatabase.entity.VendasEntidade
+import com.mobwaysolutions.appdatabase.repository.ProdutoRepository
+import com.mobwaysolutions.appdatabase.repository.UsuarioRepository
+import com.mobwaysolutions.appdatabase.repository.VendasRepository
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +21,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var buttonPesquisa: Button
     private lateinit var tilPesquisa: TextInputLayout
+
     private val produtoRepository = ProdutoRepository(this)
+    private val usuarioRepository = UsuarioRepository(this)
+    private val vendasRepository = VendasRepository(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,13 +71,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startRecyclerView(listaDeProdutos: List<ProdutoEntidade>) {
-        rvListaProdutos.adapter = ProdutoAdapter(listaDeProdutos.toMutableList()) { produto ->
-            Intent(this, EdicaoProdutoActivity::class.java).let {
-                it.putExtra("produto_id", produto.id)
-                startActivity(it)
-            }
-        }
+        rvListaProdutos.adapter =
+            ProdutoAdapter(listaDeProdutos.toMutableList(), onClick = { produto ->
+                Intent(this, EdicaoProdutoActivity::class.java).let {
+                    it.putExtra("produto_id", produto.id)
+                    startActivity(it)
+                }
+            }, onClickAddProduct = { produto ->
+                salvarVenda(produto)
+            })
         rvListaProdutos.layoutManager = LinearLayoutManager(this)
     }
+
+
+    fun salvarVenda(produtoEntidade: ProdutoEntidade) {
+        val usuario = usuarioRepository.buscar()?.first()
+        usuario?.let { user ->
+            val vendasEntidade = VendasEntidade(produto = produtoEntidade,
+                usuario = user
+            )
+            vendasRepository.inserir(vendasEntidade)
+        }
+    }
+
+
 
 }

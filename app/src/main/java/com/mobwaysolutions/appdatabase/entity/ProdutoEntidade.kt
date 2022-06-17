@@ -1,4 +1,4 @@
-package com.mobwaysolutions.appdatabase.database
+package com.mobwaysolutions.appdatabase.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,6 +1,8 @@
-package com.mobwaysolutions.appdatabase.database
+package com.mobwaysolutions.appdatabase.repository
 
 import android.content.Context
+import com.mobwaysolutions.appdatabase.database.AppDatabase
+import com.mobwaysolutions.appdatabase.entity.ProdutoEntidade
 
 class ProdutoRepository(private val context: Context) {
 
