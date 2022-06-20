@@ -2,6 +2,7 @@ package com.mobwaysolutions.appdatabase
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobwaysolutions.appdatabase.entity.VendasEntidade
@@ -24,8 +25,8 @@ class CarrinhoActivity : AppCompatActivity() {
 
         val usuario = usuarioRepository.buscar()?.first()
         usuario?.let { user ->
-           tvTitulo.text = "Carrinho do(a) ${user.nome}"
-
+            tvTitulo.text = "Carrinho do(a) ${user.nome}"
+            tvTitulo.esconder()
 //            vendasRepository.buscar()
         }
 
