@@ -35,13 +35,17 @@ class UsuarioActivity : AppCompatActivity() {
     private fun checkUsers() {
         val listaDeUsers = usuarioRepository.buscar()
         if (listaDeUsers?.isNotEmpty() == true) {
-            proximaTela()
+            proximaTela(CadastroServicoActivity::class.java)
         }
     }
 
-    private fun proximaTela() {
-        Intent(this, MainActivity::class.java).let {
-            startActivity(it)
+    private fun proximaTela(clazz: Class<*>) {
+        val listaDeUsers = usuarioRepository.buscar()
+        if (listaDeUsers?.isNotEmpty() == true) {
+            Intent(this, clazz).let {
+                it.putExtra("usuario_id", listaDeUsers.first().id)
+                startActivity(it)
+            }
         }
     }
 
@@ -52,16 +56,16 @@ class UsuarioActivity : AppCompatActivity() {
             tilNome.error = null
             tilEmail.error = null
 
-          val usuarioEntidade =
-                    UsuarioEntidade(
-                        nome = nomeDaTela,
-                        email = emailDaTela
-                    )
+            val usuarioEntidade =
+                UsuarioEntidade(
+                    nome = nomeDaTela,
+                    email = emailDaTela
+                )
 
             usuarioRepository.inserir(usuarioEntidade)
 
             // outra tela
-            proximaTela()
+            proximaTela(CadastroServicoActivity::class.java)
         } else {
             tilNome.error = "Nome não pode estar em branco"
             tilEmail.error = "Nome não pode estar em branco"

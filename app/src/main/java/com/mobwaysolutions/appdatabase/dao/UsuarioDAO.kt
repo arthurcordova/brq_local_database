@@ -9,7 +9,7 @@ interface UsuarioDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun inserir(usuarioEntidade: UsuarioEntidade)
 
-    @Query("select * from usuarioentidade where id = :id")
+    @Query("select * from usuarioentidade where usuario_id = :id")
     fun buscarPorId(id: Int): UsuarioEntidade
 
     @Query("select * from usuarioentidade")
